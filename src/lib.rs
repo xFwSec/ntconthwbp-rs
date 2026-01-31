@@ -28,5 +28,5 @@ unsafe extern "system" {
         ntcontinue: *const c_void,
         ntgetthreadcontext: *const c_void,
         hwbp: *const c_void
-    );
+    ) -> i32;
 }

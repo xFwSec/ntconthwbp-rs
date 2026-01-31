@@ -111,6 +111,7 @@ check_dr_set:
 	sub rsp, 0x20
 	call call_ntc
 	add rsp, 1272
+	xor rax, rax
 	ret
 
 unset_add_bit:
