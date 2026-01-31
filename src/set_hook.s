@@ -86,6 +86,7 @@ unset_hwbp:
 	sub rsp, 1240
 	mov rax, rdx
 	lea rdx, [rsp]
+	mov dword ptr [rdx+0x30], 0x0010001F
 	push rcx
 	push r8
 	mov rcx, -2
