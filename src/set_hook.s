@@ -17,12 +17,11 @@ set_hwbp:
 	add rsp, 0x28
 	cmp rax, 0x0
 	jne gt_fail
-	pop rax   
+	pop rcx   
 	lea rdx, [rsp+0x10]
 	push rdx  
-	cmp rax, 0x0
+	cmp rcx, 0x0
 	je find_dr
-	mov rcx, rax
 	dec rcx
 
 known_bit:
@@ -58,7 +57,6 @@ _exit:
 
 find_dr:
 	mov rax, [rdx+0x70]
-	xor rcx, rcx
 
 dr_loop:
 	cmp rcx, 0x7
