@@ -4,13 +4,13 @@
 
 set_hwbp:		
 	endbr64
-	sub rsp, 1240	
+	sub rsp, 0x4d8
 	mov rax, rdx
 	lea rdx, [rsp]
 	push rcx
 	push r8
 	push r9    
-	mov rcx, -2
+	mov rcx, 0xFFFFFFFFFFFFFFFE
 	mov dword ptr [rdx+0x30], 0x0010001F
 	sub rsp, 0x28
 	call rax
@@ -18,7 +18,7 @@ set_hwbp:
 	cmp rax, 0x0
 	jne gt_fail
 	pop rax   
-	lea rdx, [rsp+16]
+	lea rdx, [rsp+0x10]
 	push rdx  
 	cmp rax, 0x0
 	je find_dr
@@ -35,11 +35,10 @@ known_bit:
 	pop rcx    
 	sub rsp, 0x20
 	call call_ntc
-	add rsp, 1272
+	add rsp, 0x4f8
 	ret
 
 call_ntc:
-	endbr64
 	lea rax, [rip+_exit]
 	mov [rdx+0xf8], rax
 	lea rax, [rsp]
@@ -73,26 +72,28 @@ add_bit:
 	jmp dr_loop
 
 no_free:
-	add rsp, 1264
+	add rsp, 0x4f0
 	mov rax, 0x1
 	ret
 
 gt_fail:
-	sub rsp, 1264
+	add rsp, 0x4f0
 	ret
 
 unset_hwbp:			
 	endbr64
-	sub rsp, 1240
+	sub rsp, 0x4d8
 	mov rax, rdx
 	lea rdx, [rsp]
 	mov dword ptr [rdx+0x30], 0x0010001F
 	push rcx
 	push r8
-	mov rcx, -2
+	mov rcx, 0xFFFFFFFFFFFFFFFE
 	sub rsp, 0x20
 	call rax
 	add rsp, 0x20
+	cmp rax, 0x0
+	jne unset_gt_fail
 	lea rdx, [rsp+0x10]
 	xor rcx, rcx
 	pop rax
@@ -110,15 +111,18 @@ check_dr_set:
 	pop rcx
 	sub rsp, 0x20
 	call call_ntc
-	add rsp, 1272
-	xor rax, rax
+	add rsp, 0x4f8
 	ret
 
 unset_add_bit:
 	add rcx, 0x2
 	jmp check_dr_set
 
+unset_gt_fail:
+	add rsp, 0x4e8
+	ret
+
 dr_not_set:
-	add rsp, 1248
+	add rsp, 0x4e0
 	mov rax, 0x1
 	ret
